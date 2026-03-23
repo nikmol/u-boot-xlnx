@@ -55,6 +55,9 @@ static int usb5744_i2c_init(struct udevice *dev)
 	u8 data_buf[8] = {0x0, 0x5, 0x0, 0x1, 0x41, 0x1D, 0x08};
 	u8 config_reg_access_buf = USB5744_CONFIG_REG_ACCESS;
 	printf("usb5744_i2c_init\n\r");
+        printf("Debug: dumping stack...\n");
+        dump_stack();
+
 	struct udevice *i2c_bus = NULL, *i2c_dev;
 	struct ofnode_phandle_args phandle;
 	u8 buf = USB5744_COMMAND_ATTACH;
@@ -179,6 +182,8 @@ static int usb_onboard_hub_probe(struct udevice *dev)
 	int ret;
 
 	printf("usb_onboard_hub_probe\n\r");
+	printf("Debug: dumping stack...\n");
+    	dump_stack();
 	if (data->num_supplies > MAX_SUPPLIES) {
 		dev_err(dev, "invalid supplies number, max supported: %d\n", MAX_SUPPLIES);
 		return -EINVAL;
