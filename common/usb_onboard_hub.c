@@ -59,7 +59,8 @@ static int usb5744_i2c_init(struct udevice *dev)
 	u8 buf = USB5744_COMMAND_ATTACH;
 	struct dm_i2c_chip *i2c_chip;
 	int ret, slave_addr;
-
+	printf("usb5744_i2c_init\n\r");
+	return 0;
 	ret = dev_read_phandle_with_args(dev, "i2c-bus", NULL, 0, 0, &phandle);
 	if (ret == -ENOENT) {
 		dev_dbg(dev, "i2c-bus not specified\n");
@@ -176,7 +177,8 @@ static int usb_onboard_hub_probe(struct udevice *dev)
 	struct onboard_hub *hub = dev_get_priv(dev);
 	unsigned int i;
 	int ret;
-
+	printf("usb_onboard_hub_probe\n\r");
+	return 0;
 	if (data->num_supplies > MAX_SUPPLIES) {
 		dev_err(dev, "invalid supplies number, max supported: %d\n", MAX_SUPPLIES);
 		return -EINVAL;
