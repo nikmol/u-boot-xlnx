@@ -177,7 +177,13 @@ static int usb_onboard_hub_probe(struct udevice *dev)
 	struct onboard_hub *hub = dev_get_priv(dev);
 	unsigned int i;
 	int ret;
-	printf("usb_onboard_hub_probe\n\r");
+	printf("usb_onboard_hub_probe, reset\n\r");
+	ret = usb_onboard_hub_reset(dev);
+	if (ret)
+	{
+		printf("Error when doing hub reset\n\r");
+		goto err_supply;
+	}
 	return 0;
 	if (data->num_supplies > MAX_SUPPLIES) {
 		dev_err(dev, "invalid supplies number, max supported: %d\n", MAX_SUPPLIES);

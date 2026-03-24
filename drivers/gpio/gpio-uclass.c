@@ -636,6 +636,7 @@ int dm_gpio_set_value(const struct gpio_desc *desc, int value)
 		 desc->flags & GPIOD_OPEN_SOURCE)
 		return ops->direction_output(desc->dev, desc->offset, value);
 
+	printf("GPIO offset %d, value %d\n", desc->offset, value);
 	ret = ops->set_value(desc->dev, desc->offset, value);
 	if (ret)
 		return ret;
