@@ -133,12 +133,19 @@ int usb_onboard_hub_reset(struct udevice *dev)
 	/* property is optional, don't return error! */
 	if (!hub->reset_gpio)
 		return 0;
+	ret = gpio_set_value(64, 1);
+	if (ret)
+		printf("Problem to set GPIO 64\n");
 
 	ret = dm_gpio_set_value(hub->reset_gpio, 1);
 	if (ret)
 		return ret;
 
 	udelay(data->reset_us);
+
+	ret = gpio_set_value(64, 0);
+	if (ret)
+		printf("Problem to clear GPIO 64\n");
 
 	ret = dm_gpio_set_value(hub->reset_gpio, 0);
 	if (ret)
