@@ -64,13 +64,14 @@ int usb_init(void)
 	dev_index = 0;
 	asynch_allowed = 1;
 	usb_hub_reset();
-
+	
+	printf("usb_init\n");
 	/* first make all devices unknown */
 	for (i = 0; i < USB_MAX_DEVICE; i++) {
 		memset(&usb_dev[i], 0, sizeof(struct usb_device));
 		usb_dev[i].devnum = -1;
 	}
-
+	printf("init low_level USB, max ctrl cnt %d\n", CONFIG_USB_MAX_CONTROLLER_COUNT);
 	/* init low_level USB */
 	for (i = 0; i < CONFIG_USB_MAX_CONTROLLER_COUNT; i++) {
 		/* init low_level USB */
@@ -115,7 +116,7 @@ int usb_init(void)
 
 		usb_started = 1;
 	}
-
+	printf("done scanning usb\n");
 	debug("scan end\n");
 	/* if we were not able to find at least one working bus, bail out */
 	if (controllers_initialized == 0)

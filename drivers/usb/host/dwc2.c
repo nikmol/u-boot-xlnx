@@ -1172,6 +1172,7 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
 	struct dwc2_priv *priv = &local;
 
+	printf("dwc2, usb_lowlevel_init\n");
 	memset(priv, '\0', sizeof(*priv));
 	priv->root_hub_devnum = 0;
 	priv->regs = (struct dwc2_core_regs *)CONFIG_USB_DWC2_REG_ADDR;

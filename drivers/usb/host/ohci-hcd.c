@@ -1982,6 +1982,7 @@ static char ohci_inited = 0;
 
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	printf("ohci-hcd, usb_lowlevel_init\n");
 	memset(&gohci, 0, sizeof(ohci_t));
 
 	/* align the storage */

@@ -302,6 +302,7 @@ int usb_reset_root_port(struct usb_device *dev)
 
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	printf("musb_lowlevel_init\n");
 	return musb_lowlevel_init(&musb_host);
 }
 #endif /* !CONFIG_IS_ENABLED(DM_USB) */
