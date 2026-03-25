@@ -22,6 +22,8 @@
 
 #define MAX_SUPPLIES 2
 
+extern int tmp_xilinx_gpio_64_set_value(int value);
+
 struct onboard_hub {
 	struct udevice *vdd[MAX_SUPPLIES];
 	struct gpio_desc *reset_gpio;
@@ -134,16 +136,17 @@ int usb_onboard_hub_reset(struct udevice *dev)
 	if (!hub->reset_gpio)
 		return 0;
 	// Set GPIO pin 64 as output, example
-    	ret = gpio_direction_output(64, 0);
-   	if (ret)
-		printf("Problem to set GPIO 64 output direction\n");
+	tmp_xilinx_gpio_64_set_value(0);   // Active low
+    	//ret = gpio_direction_output(64, 0);
+   	//if (ret)
+	//	printf("Problem to set GPIO 64 output direction\n");
 	
-	else
-	{
-		ret = gpio_set_value(64, 1);
-		if (ret)
-			printf("Problem to set GPIO 64\n");
-	}
+	//else
+	//{
+	//	ret = gpio_set_value(64, 1);
+	//	if (ret)
+	//		printf("Problem to set GPIO 64\n");
+	//}
 
 	ret = dm_gpio_set_value(hub->reset_gpio, 1);
 	if (ret)
@@ -151,10 +154,11 @@ int usb_onboard_hub_reset(struct udevice *dev)
 
 	udelay(data->reset_us);
 
-	ret = gpio_set_value(64, 0);
-	if (ret)
-		printf("Problem to clear GPIO 64\n");
+	//ret = gpio_set_value(64, 0);
+	//if (ret)
+	//	printf("Problem to clear GPIO 64\n");
 
+	tmp_xilinx_gpio_64_set_value(1);  // Active low
 	ret = dm_gpio_set_value(hub->reset_gpio, 0);
 	if (ret)
 		return ret;
