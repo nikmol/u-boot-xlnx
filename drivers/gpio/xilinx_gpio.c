@@ -51,6 +51,10 @@ int tmp_xilinx_gpio_64_set_value(int value)
 	// Get current settings
 	tmpValue = readl(0xFF0A0048);
 	printf("Curr out values addr 0xFF0A0048, val 0x%x\n", tmpValue);
+	if (value)
+		tmpValue = tmpValue | (1 << pin);
+	else
+		tmpValue = tmpValue & ~(1 << pin);
 	writel(tmpValue, 0xFF0A0048);
 	printf("New out values addr 0xFF0A0048, val 0x%x\n", tmpValue);
 
