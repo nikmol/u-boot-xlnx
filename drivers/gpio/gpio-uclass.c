@@ -835,7 +835,7 @@ int gpio_set_value(unsigned gpio, int value)
 	struct gpio_desc desc;
 	int ret;
 
-	printf("gpio_set_value, gpio %d, valye %d\n", gpio, value);
+	printf("gpio_set_value, gpio %d, value %d\n", gpio, value);
 	ret = gpio_to_device(gpio, &desc);
 	if (ret)
 		return ret;
