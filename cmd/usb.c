@@ -610,7 +610,7 @@ static int do_usb(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 	if (strncmp(argv[1], "start", 5) == 0) {
 		if (usb_started)
 			return 0; /* Already started */
-		printf("starting USB...\n");
+		printf("test, starting USB...\n");
 		do_usb_start();
 		return 0;
 	}

@@ -295,7 +295,7 @@ static void xpsgtr_configure_pll(struct xpsgtr_phy *gtr_phy)
 {
 	const struct xpsgtr_ssc *ssc;
 	u32 step_size;
-
+	printf("xpsgtr_configure_pll\n");
 	ssc = gtr_phy->dev->refclk_sscs[gtr_phy->refclk];
 	step_size = ssc->step_size;
 
@@ -345,6 +345,7 @@ static void xpsgtr_lane_set_protocol(struct xpsgtr_phy *gtr_phy)
 	struct xpsgtr_dev *gtr_dev = gtr_phy->dev;
 	u8 protocol = gtr_phy->protocol;
 
+	printf("xpsgtr_lane_set_protocol\n");
 	switch (gtr_phy->lane) {
 	case 0:
 		xpsgtr_clr_set(gtr_dev, ICM_CFG0, ICM_CFG0_L0_MASK, protocol);
@@ -376,6 +377,7 @@ static void xpsgtr_bypass_scrambler_8b10b(struct xpsgtr_phy *gtr_phy)
 /* DP-specific initialization. */
 static void xpsgtr_phy_init_dp(struct xpsgtr_phy *gtr_phy)
 {
+	printf("xpsgtr_phy_init_dp\n");
 	xpsgtr_write_phy(gtr_phy, L0_TXPMD_TM_45,
 			 L0_TXPMD_TM_45_OVER_DP_MAIN |
 			 L0_TXPMD_TM_45_ENABLE_DP_MAIN |
@@ -390,6 +392,8 @@ static void xpsgtr_phy_init_dp(struct xpsgtr_phy *gtr_phy)
 static void xpsgtr_phy_init_sata(struct xpsgtr_phy *gtr_phy)
 {
 	struct xpsgtr_dev *gtr_dev = gtr_phy->dev;
+	
+	printf("xpsgtr_phy_init_sata\n");
 
 	xpsgtr_bypass_scrambler_8b10b(gtr_phy);
 
@@ -402,6 +406,8 @@ static void xpsgtr_phy_init_sgmii(struct xpsgtr_phy *gtr_phy)
 	struct xpsgtr_dev *gtr_dev = gtr_phy->dev;
 	u32 shift = gtr_phy->lane * PROT_BUS_WIDTH_SHIFT;
 	u32 clk_ctrl_shift = gtr_phy->lane * GEM_CLK_CTRL_WIDTH_SHIFT;
+	
+	printf("xpsgtr_phy_init_sgmii\n");
 
 	/* Set SGMII protocol TX and RX bus width to 10 bits. */
 	xpsgtr_clr_set(gtr_dev, TX_PROT_BUS_WIDTH, PROT_BUS_WIDTH_MASK << shift,
@@ -434,6 +440,8 @@ static int xpsgtr_init(struct phy *x)
 	struct xpsgtr_dev *gtr_dev = dev_get_priv(x->dev);
 	struct xpsgtr_phy *gtr_phy;
 	u32 phy_lane = x->id;
+	
+	printf("xpsgtr_init\n");
 
 	gtr_phy = &gtr_dev->phys[phy_lane];
 
@@ -473,6 +481,8 @@ static int xpsgtr_wait_pll_lock(struct phy *phy)
 	u32 phy_lane = phy->id;
 	int ret = 0;
 	unsigned int timeout = TIMEOUT_US;
+	
+	printf("xpsgtr_wait_pll_lock\n");
 
 	gtr_phy = &gtr_dev->phys[phy_lane];
 
@@ -508,7 +518,7 @@ static int xpsgtr_power_on(struct phy *phy)
 	struct xpsgtr_phy *gtr_phy;
 	u32 phy_lane = phy->id;
 	int ret = 0;
-
+	printf("xpsgtr_power_on\n");
 	gtr_phy = &gtr_dev->phys[phy_lane];
 
 	/*
@@ -533,7 +543,7 @@ static int xpsgtr_set_lane_type(struct xpsgtr_phy *gtr_phy, u8 phy_type,
 {
 	unsigned int num_phy_types;
 	const int *phy_types;
-
+	printf("xpsgtr_set_lane_type\n");
 	switch (phy_type) {
 	case PHY_TYPE_SATA: {
 		static const int types[] = {
@@ -632,7 +642,7 @@ static int xpsgtr_of_xlate(struct phy *x,
 	unsigned int refclk;
 	unsigned int i;
 	int ret;
-
+	printf("xpsgtr_of_xlate\n");
 	if (args->args_count != 4) {
 		dev_err(dev, "Invalid number of cells in 'phy' property\n");
 		return -EINVAL;
@@ -693,7 +703,7 @@ static int xpsgtr_get_ref_clocks(struct udevice *dev)
 	unsigned int refclk;
 	struct xpsgtr_dev *gtr_dev = dev_get_priv(dev);
 	int ret;
-
+	printf("xpsgtr_get_ref_clocks\n");
 	for (refclk = 0; refclk < NUM_LANES; ++refclk) {
 		int i;
 		u32 rate;
@@ -746,7 +756,7 @@ static int xpsgtr_get_ref_clocks(struct udevice *dev)
 static int xpsgtr_probe(struct udevice *dev)
 {
 	struct xpsgtr_dev *gtr_dev = dev_get_priv(dev);
-
+	printf("xpsgtr_probe\n");
 	gtr_dev->serdes = dev_remap_addr_name(dev, "serdes");
 	if (!gtr_dev->serdes)
 		return -EINVAL;
