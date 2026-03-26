@@ -239,7 +239,7 @@ static void _usb_scan_bus(void *arg)
 	struct usb_bus_priv *priv;
 	struct udevice *dev;
 	int ret;
-
+	printf("_usb_scan_bus\n\r");
 	priv = dev_get_uclass_priv(bus);
 
 	ret = usb_scan_device(bus, 0, USB_SPEED_FULL, &dev);
@@ -346,7 +346,7 @@ static void usb_init_bus(struct udevice *bus)
 
 static void usb_scan_bus(struct udevice *bus, bool recurse)
 {
-	printf("usb-uclass, usb_scan_bus\n\r");
+	printf("usb-uclass, usb_init_bus\n\r");
 	if (!grp_id)
 		grp_id = uthread_grp_new_id();
 	if (!uthread_create(NULL, _usb_scan_bus, (void *)bus, 0, grp_id))
@@ -746,6 +746,7 @@ int usb_scan_device(struct udevice *parent, int port,
 	ALLOC_CACHE_ALIGN_BUFFER(struct usb_device, udev, 1);
 	struct usb_interface_descriptor *iface = &udev->config.if_desc[0].desc;
 
+	printf("usb_scan_device\n\r");
 	*devp = NULL;
 	memset(udev, '\0', sizeof(*udev));
 	udev->controller_dev = usb_get_bus(parent);
@@ -783,14 +784,17 @@ int usb_scan_device(struct udevice *parent, int port,
 	udev->speed = speed;
 	udev->devnum = priv->next_addr + 1;
 	udev->portnr = port;
+	printf("call device_get_uclass_id\n\r");
 	debug("Calling usb_setup_device(), portnr=%d\n", udev->portnr);
 	parent_udev = device_get_uclass_id(parent) == UCLASS_USB_HUB ?
 		dev_get_parent_priv(parent) : NULL;
 	ret = usb_setup_device(udev, priv->desc_before_addr, parent_udev);
+	printf("read_descriptor for '%s': ret=%d\n", parent->name, ret);
 	debug("read_descriptor for '%s': ret=%d\n", parent->name, ret);
 	if (ret)
 		return ret;
 	ret = usb_find_child(parent, &udev->descriptor, iface, &dev);
+	printf("** usb_find_child returns %d\n", ret);
 	debug("** usb_find_child returns %d\n", ret);
 	if (ret) {
 		if (ret != -ENOENT)
@@ -804,12 +808,14 @@ int usb_scan_device(struct udevice *parent, int port,
 		created = true;
 	}
 	plat = dev_get_parent_plat(dev);
+	printf("%s: Probing '%s', plat=%p\n", __func__, dev->name, plat);
 	debug("%s: Probing '%s', plat=%p\n", __func__, dev->name, plat);
 	plat->devnum = udev->devnum;
 	plat->udev = udev;
 	priv->next_addr++;
 	ret = device_probe(dev);
 	if (ret) {
+		printf("%s: Device '%s' probe failed\n", __func__, dev->name);
 		debug("%s: Device '%s' probe failed\n", __func__, dev->name);
 		priv->next_addr--;
 		if (created)
