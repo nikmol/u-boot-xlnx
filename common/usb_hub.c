@@ -228,7 +228,7 @@ static int usb_hub_index;
 void usb_hub_reset(void)
 {
 	usb_hub_index = 0;
-
+	printf("usb_hub_reset\n");
 	/* Zero out global hub_dev in case its re-used again */
 	memset(hub_dev, 0, sizeof(hub_dev));
 }

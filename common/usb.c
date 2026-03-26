@@ -60,12 +60,11 @@ int usb_init(void)
 	int i, start_index = 0;
 	int controllers_initialized = 0;
 	int ret;
-
+	printf("usb_init\n\r");
 	dev_index = 0;
 	asynch_allowed = 1;
 	usb_hub_reset();
-	
-	printf("usb_init\n\r");
+
 	/* first make all devices unknown */
 	for (i = 0; i < USB_MAX_DEVICE; i++) {
 		memset(&usb_dev[i], 0, sizeof(struct usb_device));

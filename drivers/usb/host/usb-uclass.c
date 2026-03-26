@@ -337,6 +337,7 @@ static int grp_id;
 
 static void usb_init_bus(struct udevice *bus)
 {
+	printf("usb-uclass, usb_init_bus\n\r");
 	if (!grp_id)
 		grp_id = uthread_grp_new_id();
 	if (!uthread_create(NULL, _usb_init_bus, (void *)bus, 0, grp_id))
@@ -345,6 +346,7 @@ static void usb_init_bus(struct udevice *bus)
 
 static void usb_scan_bus(struct udevice *bus, bool recurse)
 {
+	printf("usb-uclass, usb_scan_bus\n\r");
 	if (!grp_id)
 		grp_id = uthread_grp_new_id();
 	if (!uthread_create(NULL, _usb_scan_bus, (void *)bus, 0, grp_id))
@@ -390,6 +392,7 @@ int usb_init(void)
 	struct uclass *uc;
 	int ret;
 
+	printf("usb-uclass, usb_init\n\r");
 	uthread_mutex_lock(&mutex);
 
 	if (usb_started) {

@@ -567,7 +567,7 @@ static void do_usb_start(void)
 	printf("call usb_init()\n\r");
 	if (usb_init() < 0)
 		return;
-
+	printf("back from usb_init()\n\r");
 	/* Driver model will probe the devices as they are found */
 # ifdef CONFIG_USB_STORAGE
 	/* try to recognize storage devices immediately */
