@@ -18,6 +18,8 @@
 
 #define ansi 1
 
+char default_sel[10] = "1";
+
 /*
  * Internally, each item in a menu is represented by a struct menu_item.
  *
@@ -222,13 +224,16 @@ static inline int menu_interactive_choice(struct menu *m, void **choice)
 		} else {
 			char *key = m->item_choice(m->item_choice_data);
 			
-			printf("key %s\n", key);
+			printf("key %s\n\r", key);
+			
+			printf("Change to default %s\n\r", default_sel);
+			key = default_sel;
 			
 			for (i=0; i<1000; i++)
 			{
 				udelay(1000);
 			}
-
+			
 			if (key)
 				choice_item = menu_item_by_key(m, key);
 		}
