@@ -297,6 +297,7 @@ static void _usb_init_bus(void *arg)
 {
 	struct udevice *bus = (struct udevice *)arg;
 	int ret;
+	int result;
 
 	printf("_usb_init_bus\n\r");
 	/* init low_level USB */
@@ -321,6 +322,11 @@ static void _usb_init_bus(void *arg)
 	}
 
 	printf("device_probe bus %s\n\r", bus->name);
+	// Check if this is dwc3_0
+	result = strcmp(bus->name, "usb@fe200000");
+	printf("Compare result %d\n", result);
+	if (result == 0)
+		return;
 	ret = device_probe(bus);
 	if (ret == -ENODEV) {	/* No such device. */
 		printf("Bus %s: Port not available.\n", bus->name);
