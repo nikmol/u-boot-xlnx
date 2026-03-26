@@ -12,6 +12,7 @@
 #include <linux/delay.h>
 #include <linux/list.h>
 #include <watchdog.h>
+#include <linux/delay.h>
 
 #include "menu.h"
 
@@ -194,6 +195,7 @@ int menu_default_choice(struct menu *m, void **choice)
  */
 static inline int menu_interactive_choice(struct menu *m, void **choice)
 {
+	int i;
 	char cbuf[CONFIG_SYS_CBSIZE];
 	struct menu_item *choice_item = NULL;
 	int readret;
@@ -221,6 +223,11 @@ static inline int menu_interactive_choice(struct menu *m, void **choice)
 			char *key = m->item_choice(m->item_choice_data);
 			
 			printf("key %s\n", key);
+			
+			for (i=0; i<1000; i++)
+			{
+				udelay(1000);
+			}
 
 			if (key)
 				choice_item = menu_item_by_key(m, key);
