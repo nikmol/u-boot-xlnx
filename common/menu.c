@@ -219,6 +219,8 @@ static inline int menu_interactive_choice(struct menu *m, void **choice)
 			}
 		} else {
 			char *key = m->item_choice(m->item_choice_data);
+			
+			printf("key %s\n", key);
 
 			if (key)
 				choice_item = menu_item_by_key(m, key);
