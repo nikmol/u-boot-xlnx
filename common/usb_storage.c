@@ -315,6 +315,7 @@ void usb_stor_reset(void)
  */
 int usb_stor_scan(int mode)
 {
+	printf("usb_stor_scan\n");
 	if (mode == 1)
 		printf("       scanning usb for storage devices... ");
 

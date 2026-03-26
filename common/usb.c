@@ -65,7 +65,7 @@ int usb_init(void)
 	asynch_allowed = 1;
 	usb_hub_reset();
 	
-	printf("usb_init\n");
+	printf("usb_init\n\r");
 	/* first make all devices unknown */
 	for (i = 0; i < USB_MAX_DEVICE; i++) {
 		memset(&usb_dev[i], 0, sizeof(struct usb_device));
