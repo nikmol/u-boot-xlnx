@@ -266,6 +266,7 @@ static int usb_probe_companion(struct udevice *bus)
 	struct udevice *companion_dev;
 	int ret;
 
+	printf("usb_probe_companion\n\r");
 	/*
 	 * Enforce optional companion controller is marked as such in order to
 	 * 1st scan the primary controller, before the companion controller
@@ -297,6 +298,7 @@ static void _usb_init_bus(void *arg)
 	struct udevice *bus = (struct udevice *)arg;
 	int ret;
 
+	printf("_usb_init_bus\n\r");
 	/* init low_level USB */
 
 	/*
@@ -318,6 +320,7 @@ static void _usb_init_bus(void *arg)
 		}
 	}
 
+	printf("device_probe bus %s\n\r", bus->name);
 	ret = device_probe(bus);
 	if (ret == -ENODEV) {	/* No such device. */
 		printf("Bus %s: Port not available.\n", bus->name);
