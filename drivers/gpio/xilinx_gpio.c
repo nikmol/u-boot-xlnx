@@ -32,6 +32,37 @@ struct xilinx_gpio_privdata {
 	u32 output_val[XILINX_GPIO_MAX_BANK];
 };
 
+#if 1
+int tmp_xilinx_gpio_64_set_value(int value)
+{
+	u32 pin;
+	u32 tmpValue;
+	pin = 12;
+	
+	
+	// Get current direction
+	tmpValue = readl(0xFF0A0284);
+	printf("Curr dir values addr 0xFF0A0284, val 0x%x\n", tmpValue); 
+	// Set direction to output
+	tmpValue = tmpValue | (0x1 << pin);
+	
+	writel(tmpValue, 0xFF0A0284);
+	printf("New dir values addr 0xFF0A0284, val 0x%x\n", tmpValue);
+	// Get current settings
+	tmpValue = readl(0xFF0A0048);
+	printf("Curr out values addr 0xFF0A0048, val 0x%x\n", tmpValue);
+	if (value)
+		tmpValue = tmpValue | (1 << pin);
+	else
+		tmpValue = tmpValue & ~(1 << pin);
+	writel(tmpValue, 0xFF0A0048);
+	printf("New out values addr 0xFF0A0048, val 0x%x\n", tmpValue);
+
+	return 0;
+};
+#endif
+
+
 static int xilinx_gpio_get_bank_pin(unsigned offset, u32 *bank_num,
 				    u32 *bank_pin_num, struct udevice *dev)
 {

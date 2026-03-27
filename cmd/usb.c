@@ -21,6 +21,9 @@
 #include <asm/unaligned.h>
 #include <part.h>
 #include <usb.h>
+#include <linux/delay.h>
+
+extern int tmp_xilinx_gpio_64_set_value(int value);
 
 #ifdef CONFIG_USB_STORAGE
 static int usb_stor_curr_dev = -1; /* current device */
@@ -563,6 +566,12 @@ static int do_usbboot(struct cmd_tbl *cmdtp, int flag, int argc,
 static void do_usb_start(void)
 {
 	bootstage_mark_name(BOOTSTAGE_ID_USB_START, "usb_start");
+
+	// Reset SD card PHY
+	printf("Toggle GPIO64\n\r");
+	tmp_xilinx_gpio_64_set_value(0);   // Active low
+	udelay(200);
+	tmp_xilinx_gpio_64_set_value(1);   // Active low:w
 
 	if (usb_init() < 0)
 		return;
